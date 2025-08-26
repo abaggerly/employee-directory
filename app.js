@@ -11,11 +11,18 @@ app.route("/employees").get((req, res) => {
   res.send(employees);
 });
 
+let lastRandomEmployee = null; 
 app.route("/employees/random").get((req, res) => {
   if (!employees) {
     return res.status(200).send("Employee Not found");
   }
-  const randomEmployee = employees[Math.floor(Math.random() * employees.length)];
+  let randomEmployee;
+  do {
+  randomEmployee = employees[Math.floor(Math.random() * employees.length)];
+  } while (randomEmployee === lastRandomEmployee);
+
+  lastRandomEmployee = randomEmployee;
+
   res.send(randomEmployee);
 });
 
